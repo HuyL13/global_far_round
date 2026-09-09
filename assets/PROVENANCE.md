@@ -5,7 +5,6 @@ The strict reproduction files were copied byte-for-byte from the local
 
 | File | SHA-256 |
 |---|---|
-| `vendor/phase1_eval/quantization.py` | `64c2f9747286bd191fd54ca2a850e85b9bdc1b5c8884942840000eaaf74508ac` |
 | `vendor/phase1_eval/ppl.py` | `a05e1ac2984dc01dd3b595b9250388ee408f68cffaacceb4ad71a136822088bc` |
 | `vendor/phase1_eval/if_sft_verifier.py` | `b785606a8cdb58c0ecf847cf40e4ddc055591f80145964a6887b27a79a83042c` |
 | `assets/fingerprints/if_sft_llama2_keys.json` | `4885c8c1e6c7b58133bbdbb4150d9d3c00223b1dd0df6a206e8abaa498720be2` |

@@ -12,6 +12,12 @@
 
 ## Strict Phase1 reproduction override
 
+> Latest user decision (2026-09-09): the RTN3-specific bullets in this
+> section are superseded. RTN3 and RTN4 must match `quantization_attack`
+> exactly: both use its Tier0 affine `rtn_quantize_weight_raw` behavior at
+> group size 128, with bits 3 and 4 respectively. Phase1 remains authoritative
+> only for PPL and containment FSR. Global FAR remains unchanged.
+
 This section overrides conflicting steps below.
 
 - RTN3 copies `phase1_if_analysis/src/phase1/quantization.py` and preserves

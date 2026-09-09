@@ -13,7 +13,7 @@ def compare(actual, reference, ppl_tolerance=0.05, strict_checksum=False):
     for method in ("rtn3", "rtn4", "far"):
         if method not in indexed: failures.append(f"missing result: {method}"); continue
         expected=reference[method]; row=indexed[method]
-        if abs(row["ppl"]-expected["ppl"]) > ppl_tolerance:
+        if "ppl" in expected and abs(row["ppl"]-expected["ppl"]) > ppl_tolerance:
             failures.append(f"{method}.ppl actual={row['ppl']} expected={expected['ppl']}")
         if "fsr_contains" in expected and row["fsr_contains"] != expected["fsr_contains"]:
             failures.append(f"{method}.fsr_contains actual={row['fsr_contains']} expected={expected['fsr_contains']}")

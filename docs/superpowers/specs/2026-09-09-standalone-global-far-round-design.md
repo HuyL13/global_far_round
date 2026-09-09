@@ -124,6 +124,10 @@ explicit separate command.
 
 ## Deliberately separate RTN baselines
 
+Superseded by the latest approved implementation: both standalone RTN
+baselines reproduce `quantization_attack`'s affine Tier0 backend exactly.
+Global FAR continues to use that same internal affine grid.
+
 RTN3 calls the Phase1 NumPy symmetric INT3 implementation exactly: float32
 CPU conversion, qmin=-3, qmax=3, group size 128, and the Phase1 module regex.
 RTN4 calls the current Tier0 affine W4-G128 grid used internally by Global

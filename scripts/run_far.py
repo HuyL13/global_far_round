@@ -27,7 +27,7 @@ def main():
     cfg = load_config(args.config)
     if cfg.mode != "far": raise SystemExit("run_far.py requires far config")
     output = prepare_output_dir(args.output, args.resume)
-    tokenizer = load_tokenizer(cfg.tokenizer_id)
+    tokenizer = load_tokenizer(cfg.model_id)
     model = load_model(cfg.model_id, args.device, args.dtype or cfg.dtype)
     if hasattr(model, "gradient_checkpointing_enable"):
         model.gradient_checkpointing_enable()
