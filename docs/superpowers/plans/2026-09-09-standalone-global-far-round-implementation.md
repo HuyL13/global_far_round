@@ -10,6 +10,27 @@
 
 **Spec:** `docs/superpowers/specs/2026-09-09-standalone-global-far-round-design.md`
 
+## Strict Phase1 reproduction override
+
+This section overrides conflicting steps below.
+
+- RTN3 copies `phase1_if_analysis/src/phase1/quantization.py` and preserves
+  `parameter.detach().float().cpu().numpy()`, symmetric qmin=-3/qmax=3,
+  group size 128, the Phase1 module regex, and checkpoint export behavior.
+- RTN4 and Global FAR keep the current Tier0 affine W4-G128 backend. RTN3
+  and RTN4 deliberately do not share an implementation.
+- `phase1_if_analysis/src/phase1/ppl.py` is copied verbatim and is the only
+  PPL evaluator for RTN3, RTN4, and FAR.
+- `phase1_if_analysis/src/phase1/if_sft_verifier.py` and the eight published
+  Phase1 query rows are reused. Primary FSR is `target in generated`.
+- Generation is greedy with `max_new_tokens=30`, `num_beams=1`,
+  `repetition_penalty=1.0`, and Phase1 decoding without normalization.
+- The final table uses `FSR_contains`; `FSR_exact` is optional and secondary.
+- A100 acceptance requires fingerprinted seed42 RTN3 PPL near `8.248011` and
+  containment FSR `8/8`. PPL near `6.6779` is a failed reproduction.
+- Thin wrappers may add logging and result plumbing only; they may not alter
+  RTN3, PPL, verifier, tokenization, generation, or metric behavior.
+
 ## Global Constraints
 
 - Preserve current RTN3, RTN4, and Global FAR numerical behavior before any scientific algorithm change.

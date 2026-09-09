@@ -16,9 +16,10 @@ reports results; it has no PPL gate, PASS status, or stop-early behavior.
 ## Source and scientific behavior
 
 The authoritative attack source is
-`HuyL13/quantization_attack@fragile-channel-ppl-eval`. The authoritative
-fingerprint verifier and key asset source is
-`huynguyenquang-collab/if_awq@main`.
+`HuyL13/quantization_attack@fragile-channel-ppl-eval`. RTN3, PPL, fingerprint
+queries, tokenizer choice, and fingerprint verification are frozen to
+`HuyL13/phase1_if_analysis`. RTN4 and Global FAR retain the current Tier0
+affine grid used by Method 3.
 
 The migration preserves the current experiment before making algorithmic
 improvements. In particular, the initial standalone FAR implementation keeps
@@ -31,7 +32,11 @@ selection semantics, and checksum behavior. The known A100 reference is:
 - checksum: `96c6b598dddf864eb3a3462f6b6af68d37c0f0deeed9125d9686f50e1bf1c68a`;
 - FAR PPL: `6.9738`;
 - RTN4 PPL: `5.7981`;
-- FAR exact FSR: `0/8`.
+- FAR containment FSR: `0/8`.
+
+The mandatory Phase1 RTN3 fingerprinted reference (seed 42) is PPL
+`8.248011` and containment FSR `8/8`. PPL near `6.6779` indicates a protocol
+mismatch and must fail reference comparison.
 
 The observed mismatch between selected ratio and RTN4 flip ratio is recorded
 as a scientific follow-up. It is not silently changed during this refactor.
@@ -117,12 +122,12 @@ script never installs packages or creates an environment.
 The default run is a single FAR experiment. The seven-point sweep remains an
 explicit separate command.
 
-## Shared RTN implementation
+## Deliberately separate RTN baselines
 
-RTN3 and RTN4 call one `apply_rtn(model, bits, group_size)` implementation.
-It quantizes the 224 transformer-body linear projections with affine
-groupwise quantization and reports per-layer progress. Embeddings and
-`lm_head` remain excluded, matching the source pipeline.
+RTN3 calls the Phase1 NumPy symmetric INT3 implementation exactly: float32
+CPU conversion, qmin=-3, qmax=3, group size 128, and the Phase1 module regex.
+RTN4 calls the current Tier0 affine W4-G128 grid used internally by Global
+FAR. These backends must not be unified.
 
 Each RTN runner loads a fresh model, applies RTN, evaluates PPL and FSR, writes
 artifacts, then releases the model. RTN4 and RTN3 do not gate one another.
@@ -151,19 +156,17 @@ controls whether FSR runs.
 
 ## Fingerprint evaluation
 
-The vendored verifier preserves deterministic greedy generation,
-normalization, exact match, contains match, Wilson interval, and current
-teacher-forced target metrics. It prints one concise progress line per key and
-a final hit count. The official key JSON is copied byte-for-byte from Tier0
-and checked in tests for count and stable hashes/targets.
+The vendored Phase1 verifier uses raw published prompts, deterministic greedy
+generation (`max_new_tokens=30`), unmodified decoding, and `target in
+generated` containment. This containment score is primary FSR. Exact match
+may be recorded only as a clearly labelled secondary diagnostic.
 
 ## PPL evaluation
 
-All three paths use the same GPTQ-style WikiText-2 protocol currently used by
-the attack repository: tokenize the raw test corpus once, split it into 2048
-token non-overlapping blocks, evaluate all complete blocks, and report the
-number of blocks. Dataset/tokenizer caching may be reused without changing
-the metric.
+All three paths call the copied Phase1 `src/phase1/ppl.py` evaluator without
+rewriting it. They use tokenizer `NousResearch/Llama-2-7b-hf`, WikiText-2 raw
+test split, and 2048-token non-overlapping blocks. Orchestration may log before
+and after this call but must not change its internals.
 
 ## Outputs
 
