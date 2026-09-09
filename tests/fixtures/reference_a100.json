@@ -1,0 +1,13 @@
+{
+  "rtn3": {"ppl": 8.248011, "fsr_contains": 1.0},
+  "rtn4": {"ppl": 5.798064231872559},
+  "far": {
+    "ppl": 6.9738,
+    "fsr_contains": 0.0,
+    "global_num_selected": 324421992,
+    "global_num_weights": 6476005376,
+    "actual_selected_fraction": 0.050096,
+    "actual_rounding_flip_ratio": 0.075701,
+    "selection_mask_checksum": "96c6b598dddf864eb3a3462f6b6af68d37c0f0deeed9125d9686f50e1bf1c68a"
+  }
+}

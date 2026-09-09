@@ -12,7 +12,8 @@ The primary fingerprint metric is `FSR_contains`; `FSR_exact` is a secondary dia
 
 ## Colab
 
-Use an A100 40GB runtime. After installing `requirements.txt`, run:
+Use an A100 40GB runtime whose environment already provides the packages in
+`requirements.txt`, then run:
 
 ```bash
 git clone https://github.com/HuyL13/global_far_round.git
@@ -33,3 +34,9 @@ for evaluation, matching Phase1. This requires roughly 14 GB of temporary disk.
 Expected Phase1 fingerprinted RTN3 reference on seed 42 is PPL approximately
 `8.248011` and containment FSR `8/8`. A result near `6.6779` means the wrong
 quantization/evaluation protocol was used.
+
+After an A100 run, validate the frozen references with:
+
+```bash
+python -u scripts/compare_reference.py --strict-checksum
+```
