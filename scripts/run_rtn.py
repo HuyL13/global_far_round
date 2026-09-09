@@ -43,6 +43,12 @@ def main():
         model.save_pretrained(checkpoint, safe_serialization=True)
         source_tokenizer = load_tokenizer(cfg.model_id)
         source_tokenizer.save_pretrained(checkpoint)
+        write_json(checkpoint / "quantization_manifest.json", {
+            **quant, "symmetric": True, "seed": cfg.seed,
+            "source_checkpoint": cfg.model_id, "upstream": "phase1-rtn-export",
+            "upstream_sha": "phase1.rtn.v1", "dense_quantized_weights": True,
+            "storage_representation": "hf_dequantized",
+        })
         del source_tokenizer
         del model
         gc.collect()

@@ -28,6 +28,8 @@ OUTPUT=/content/global_far_results DEVICE=cuda DTYPE=bfloat16 bash run_full.sh
 ```
 
 The script streams logs and stores separate RTN3, RTN4, FAR, and summary logs.
+The default config runs one Global FAR experiment at exactly 5%; it does not
+run a fraction sweep.
 RTN3 deliberately exports a dequantized float32 checkpoint before reloading it
 for evaluation, matching Phase1. This requires roughly 14 GB of temporary disk.
 
