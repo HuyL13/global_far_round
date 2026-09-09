@@ -1,0 +1,16 @@
+mode: far
+model_id: cnut1648/LLaMA2-7B-fingerprinted-SFT
+tokenizer_id: NousResearch/Llama-2-7b-hf
+bits: 4
+group_size: 128
+dtype: bfloat16
+seed: 42
+ppl_sequence_length: 2048
+max_new_tokens: 30
+aggressive_fraction: 0.05
+eps: 1.0e-8
+calibration_samples: 16
+calibration_batch_size: 4
+calibration_sequence_length: 512
+behavior: top1_logprob
+histogram_bins: 65536

@@ -1,0 +1,1 @@
+"""Vendored, provenance-locked implementations."""
