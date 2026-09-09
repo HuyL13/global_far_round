@@ -27,7 +27,7 @@ def compare(actual, reference, ppl_tolerance=0.05, strict_checksum=False):
 
 def main():
     parser=argparse.ArgumentParser(); parser.add_argument("--actual", default="results/summary.json")
-    parser.add_argument("--reference", default="tests/fixtures/reference_a100.json")
+    parser.add_argument("--reference", default="assets/reference_a100.json")
     parser.add_argument("--ppl-tolerance", type=float, default=0.05); parser.add_argument("--strict-checksum", action="store_true")
     args=parser.parse_args(); failures=compare(read_json(args.actual), read_json(args.reference), args.ppl_tolerance, args.strict_checksum)
     if failures:
